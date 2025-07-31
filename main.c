@@ -265,7 +265,8 @@ int main() {
                     snprintf(cmd, sizeof(cmd), "git checkout %s >/dev/null 2>&1", checkout_branch);
                     int ret = system(cmd);
                     if (ret != 0) {
-                        mvprintw(row_count + 10, 0, "Error: Failed to checkout '%s'", checkout_branch);
+                        move(row_count + 10, 0); clrtoeol();
+                        printw( "Error: Failed to checkout '%s'", checkout_branch);
                         refresh(); getch(); break;
                     }
 
@@ -273,7 +274,8 @@ int main() {
                     snprintf(cmd, sizeof(cmd), "git pull origin %s >/dev/null 2>&1", checkout_branch);
                     ret = system(cmd);
                     if (ret != 0) {
-                        mvprintw(row_count + 11, 0, "Error: Pull failed from origin/%s", checkout_branch);
+                        move(row_count + 11, 0); clrtoeol();
+                        printw("Error: Pull failed from origin/%s", checkout_branch);
                         refresh(); getch(); break;
                     }
 
@@ -281,7 +283,8 @@ int main() {
                     snprintf(cmd, sizeof(cmd), "git pull origin %s", pull_branch);
                     FILE *merge_fp = popen(cmd, "r");
                     if (!merge_fp) {
-                        mvprintw(row_count + 12, 0, "Error: Failed to pull from %s", pull_branch);
+                        move(row_count + 12, 0); clrtoeol();
+                        printw("Error: Failed to pull from %s", pull_branch);
                         refresh(); getch(); break;
                     }
 
@@ -296,7 +299,8 @@ int main() {
                     pclose(merge_fp);
 
                     if (conflict) {
-                        mvprintw(row_count + 13, 0, "Conflict detected while pulling from %s into %s", pull_branch, checkout_branch);
+                        move(row_count + 13, 0); clrtoeol();
+                        printw("Conflict detected while pulling from %s into %s", pull_branch, checkout_branch);
                         refresh(); getch(); break;
                     }
 
@@ -304,13 +308,14 @@ int main() {
                     snprintf(cmd, sizeof(cmd), "git push origin %s > /dev/null 2>&1", checkout_branch);
                     ret = system(cmd);
                     if (ret != 0) {
-                        mvprintw(row_count + 13, 0, "❌ Failed to push '%s' to origin", checkout_branch);
+                        move(row_count + 13, 0); clrtoeol();
+                        printw("X: Failed to push '%s' to origin", checkout_branch);
                         refresh(); getch(); break;
                     }
                 }
-
-                mvprintw(row_count + 15, 0, "Merge complete.");
-                refresh(); getch();
+                move(row_count + 15, 0); clrtoeol();
+                printw("Merge complete.");
+                refresh(); getch(); break;
             }
         }
         else if (add_highlight) {
