@@ -266,9 +266,7 @@ int main() {
                     int ret = system(cmd);
                     if (ret != 0) {
                         mvprintw(row_count + 10, 0, "Error: Failed to checkout '%s'", checkout_branch);
-                        refresh();
-                        getch();
-                        break;
+                        refresh(); getch(); break;
                     }
 
                     // Pull from the same branch (safe refresh)
@@ -276,9 +274,7 @@ int main() {
                     ret = system(cmd);
                     if (ret != 0) {
                         mvprintw(row_count + 11, 0, "Error: Pull failed from origin/%s", checkout_branch);
-                        refresh();
-                        getch();
-                        break;
+                        refresh(); getch(); break;
                     }
 
                     // Pull from the selected "pull from" branch
@@ -286,9 +282,7 @@ int main() {
                     FILE *merge_fp = popen(cmd, "r");
                     if (!merge_fp) {
                         mvprintw(row_count + 12, 0, "Error: Failed to pull from %s", pull_branch);
-                        refresh();
-                        getch();
-                        break;
+                        refresh(); getch(); break;
                     }
 
                     char line[512];
@@ -303,9 +297,7 @@ int main() {
 
                     if (conflict) {
                         mvprintw(row_count + 13, 0, "Conflict detected while pulling from %s into %s", pull_branch, checkout_branch);
-                        refresh();
-                        getch();
-                        break;
+                        refresh(); getch(); break;
                     }
 
                     // No conflict: push
@@ -313,14 +305,12 @@ int main() {
                     ret = system(cmd);
                     if (ret != 0) {
                         mvprintw(row_count + 13, 0, "❌ Failed to push '%s' to origin", checkout_branch);
-                        refresh(); getch();
+                        refresh(); getch(); break;
                     }
                 }
 
-                mvprintw(row_count + 15, 0, "Merge complete. Press any key to exit.");
-                refresh();
-                getch();
-                break;
+                mvprintw(row_count + 15, 0, "Merge complete.");
+                refresh(); getch();
             }
         }
         else if (add_highlight) {
