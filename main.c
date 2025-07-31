@@ -280,7 +280,7 @@ int main() {
                     }
 
                     // Pull from the selected "pull from" branch
-                    snprintf(cmd, sizeof(cmd), "git pull origin %s", pull_branch);
+                    snprintf(cmd, sizeof(cmd), "git pull origin %s >/dev/null 2>&1", pull_branch);
                     FILE *merge_fp = popen(cmd, "r");
                     if (!merge_fp) {
                         move(row_count + 12, 0); clrtoeol();
